@@ -15,7 +15,6 @@ const Demo = () => {
             TotalSqFt: '',
             Quantity: '',
             RateItemWise: '',
-            RateSqFtWise: '',
             Total: 0,
             Img: ''
         },
@@ -68,7 +67,7 @@ const Demo = () => {
                     item[key] = (item.Height) * (item.Width)
                 }
                 if (key === 'Total' && item.id === editedItem.id) {
-                    item[key] = item.RateItemWise ? (item.RateItemWise) * (item.Quantity) : (item.RateSqFtWise) && (item.TotalSqFt) * (item.Quantity)
+                    item[key] = (item.RateItemWise) * (item.Quantity)
                 }
                 if (key === 'Img' && item.id === editedItem.id) {
                     console.log("lodu", image)
@@ -93,7 +92,6 @@ const Demo = () => {
             TotalSqFt: '',
             Quantity: '',
             RateItemWise: '',
-            RateSqFtWise: '',
             Total: 0,
             Img: ''
         }])
@@ -120,11 +118,14 @@ const Demo = () => {
     console.log("data_______", data)
     const handleSubmit = () => {
         const res = axios.post('https://invoice-api-m465.onrender.com/api/client', data)
+        // const res = axios.post('http://localhost:5000/api/client', data)
+
         console.log(res.data)
         window.location.reload()
     }
 
     const handleClient = () => {
+        // const res = axios.get(`http://localhost:5000/api/client/?name=${clientName}`)
         const res = axios.get(`https://invoice-api-m465.onrender.com/api/client/?name=${clientName}`)
             .then((res) => setClientData(res.data))
             .catch((err) => console.log(err))
@@ -134,9 +135,9 @@ const Demo = () => {
 
     console.log("totola", Number(total))
 
-    const figure = !clientData ? (total * client.discount / 100).toFixed(2) : (total * clientData?.discount / 100).toFixed(2)
+    // const figure = !clientData ? (total - client.discount).toFixed(2) : (total - clientData?.discount).toFixed(2)
 
-    const finalPrice = ((total - figure) - (!clientData ? client?.advance : clientData?.advance)).toFixed(2)
+    const finalPrice = ((total - (!clientData ? client.discount : clientData.discount)) - (!clientData ? client?.advance : clientData?.advance)).toFixed(2)
 
     return (
         <div className='body'>
@@ -195,7 +196,6 @@ const Demo = () => {
                         </th>
                         <th>Quantity</th>
                         <th>Rate Item Wise</th>
-                        <th>Rate Sq.Ft Wise</th>
                         <th>Total</th>
                         <th>Image</th>
                     </tr>
@@ -221,9 +221,6 @@ const Demo = () => {
                                 </td>
                                 <td className='span'>
                                     <span>{item.RateItemWise}</span>
-                                </td>
-                                <td className='span'>
-                                    <span>{item.RateSqFtWise}</span>
                                 </td>
                                 <td className='span'>
                                     <span>{item.Total}</span>
@@ -253,11 +250,9 @@ const Demo = () => {
                                         <input type="number" placeholder="Quantity" name='Quantity' id={item.id} onChange={edtiItemHandler} />
                                     </td>
                                     <td>
-                                        <input type="number" placeholder="RateItemWise" name='RateItemWise' id={item.id} onChange={edtiItemHandler} disabled={item?.RateSqFtWise} />
+                                        <input type="number" placeholder="RateItemWise" name='RateItemWise' id={item.id} onChange={edtiItemHandler} />
                                     </td>
-                                    <td>
-                                        <input type="number" placeholder="RateSqFtWise" name='RateSqFtWise' id={item.id} onChange={edtiItemHandler} disabled={item?.RateItemWise} />
-                                    </td>
+
                                     <td>
                                         <input type="number" placeholder="Total" name='Total' id={item.id} value={item.Total} onChange={edtiItemHandler} />
                                     </td>
@@ -299,10 +294,10 @@ const Demo = () => {
                         <input type="number" placeholder='Advance' name='advance' onChange={handleChange} disabled={clientData} className='discount__input' />
                     }
                 </div>
-                <div>
+                {/* <div>
                     <label>You're Saving: </label>
                     <span>{!figure ? null : figure}</span>
-                </div>
+                </div> */}
                 <div>
                     <label>Total Payment: </label>
                     <span>{finalPrice}</span>
