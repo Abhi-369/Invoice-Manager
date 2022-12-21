@@ -119,13 +119,13 @@ const Demo = () => {
 
     console.log("data_______", data)
     const handleSubmit = () => {
-        const res = axios.post('http://localhost:5000/api/client', data)
+        const res = axios.post('https://invoice-api-m465.onrender.com/api/client', data)
         console.log(res.data)
         window.location.reload()
     }
 
     const handleClient = () => {
-        const res = axios.get(`http://localhost:5000/api/client/?name=${clientName}`)
+        const res = axios.get(`https://invoice-api-m465.onrender.com/api/client/?name=${clientName}`)
             .then((res) => setClientData(res.data))
             .catch((err) => console.log(err))
     }
