@@ -148,12 +148,12 @@ const Demo = () => {
                 <label className='label'>Name: </label>
                 {
                     clientData ? <span className='api__data'>{clientData.username}</span> :
-                        <input type="text" placeholder='username' name='username' onChange={handleChange} required className='client__data' />
+                        <input type="text" placeholder='username' name='username' autoComplete='on' onChange={handleChange} required className='client__data' />
                 } &nbsp;
                 <label className='label'>Mobile Number: </label>
                 {
                     clientData ? <span className='api__data'>{clientData.number}</span> :
-                        <input type="number" placeholder='number' name='number' onChange={handleChange} required className='client__data' />
+                        <input type="number" placeholder='number' name='number' autoComplete='on' onChange={handleChange} required className='client__data' />
                 }
             </div>
             <table style={{ marginTop: '40px' }}>
@@ -237,7 +237,7 @@ const Demo = () => {
                             items.map((item, i) => (
                                 <tr key={i}>
                                     <td>
-                                        <input type="text" placeholder='Item' name='Item' id={item.id} onChange={edtiItemHandler} />
+                                        <input type="text" placeholder='Item' name='Item' autoComplete='on' id={item.id} onChange={edtiItemHandler} />
                                     </td>
                                     <td>
                                         <input type="number" placeholder='Height' name='Height' id={item.id} onChange={edtiItemHandler} />
