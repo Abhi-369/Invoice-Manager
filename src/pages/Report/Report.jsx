@@ -13,12 +13,8 @@ const Report = () => {
             .then((res) => setData(res.data))
             .catch((err) => console.log(err))
     }, [])
-    // const res = data?.map((item) => item.products)
-    // setItems(res)
 
     const length = data?.length
-
-    console.log("data", data)
 
 
     return (

@@ -137,7 +137,7 @@ const Demo = () => {
         axios.post('https://invoice-api-m465.onrender.com/api/client', data)
         // axios.post('http://localhost:5000/api/client', data)
 
-        navigate('/report')
+        navigate('/list')
         window.location.reload()
     }
 
