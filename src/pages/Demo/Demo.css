@@ -13,17 +13,17 @@
 
 table>thead>tr>th {
     /* border-right: 1px solid lightgray; */
-    border: 1px solid lightgray;
+    /* border: 1px solid lightgray; */
 }
 
-input {
+/* input {
     border: none;
     outline: none;
     padding: 10px;
     background: #d8042a;
     color: #fff;
     border-radius: 5px;
-}
+} */
 
 .search {
     border: 1px solid lightgray;
@@ -40,7 +40,7 @@ input {
     color: #000;
 }
 
-.search>button {
+/* .search>button {
     outline: none;
     border: none;
     height: 100%;
@@ -49,7 +49,7 @@ input {
     background-color: #d8042a;
     color: white;
     padding: 10px;
-}
+} */
 
 .client__data {
     border-bottom: 1px solid;
@@ -81,7 +81,7 @@ table>tbody>tr>td>input::placeholder, .discount__input::placeholder {
     color: rgba(255, 255, 255, 0.661);
 }
 
-.btn {
+/* .btn {
     border: none;
     outline: none;
     padding: 10px 20px;
@@ -91,16 +91,16 @@ table>tbody>tr>td>input::placeholder, .discount__input::placeholder {
     font-weight: 600;
     cursor: pointer;
     margin-left: 10px;
-}
+} */
 
-.math__data>* {
+/* .math__data>* {
     border-bottom: 1px solid;
     margin: 10px;
     padding: 2px;
     font-weight: bold;
     color: #b41733;
     font-size: 18px;
-}
+} */
 
 .math__data>*>span {
     padding: 20px;

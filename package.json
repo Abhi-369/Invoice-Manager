@@ -7,11 +7,13 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.1",
+    "moment": "^2.29.4",
     "nice-invoice": "^1.1.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-file-base64": "^1.0.3",
     "react-icons": "^4.7.1",
+    "react-router-dom": "^6.5.0",
     "react-scripts": "5.0.1",
     "react-simple-invoice": "^1.0.14",
     "uid": "^2.0.1",
@@ -40,5 +42,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.20",
+    "tailwindcss": "^3.2.4"
   }
 }
