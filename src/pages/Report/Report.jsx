@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
-const Report = ({ setItemId, itemId }) => {
+const Report = () => {
 
     const [data, setData] = useState()
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/client/report')
+        // axios.get('http://localhost:5000/api/client/report')
+        axios.get('https://invoice-api-m465.onrender.com/api/client/report')
             .then((res) => setData(res.data))
             .catch((err) => console.log(err))
     }, [])

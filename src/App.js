@@ -1,8 +1,7 @@
 import './App.css';
 import Demo from './pages/Demo/Demo';
 import Report from './pages/Report/Report';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
 
