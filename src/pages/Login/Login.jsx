@@ -36,6 +36,7 @@ const Login = () => {
 
         localStorage.setItem('user', JSON.stringify(loginData.username))
 
+        window.location.reload()
         navigate('/list')
     }
 
