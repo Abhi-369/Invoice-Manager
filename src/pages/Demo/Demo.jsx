@@ -147,7 +147,6 @@ const Demo = () => {
         setData({ products: [...items], ...client, ...totalAmount })
     }, [items, client])
 
-
     const handleSubmit = async () => {
         setLoading(true)
         await axios.post('https://invoice-api-m465.onrender.com/api/client', data)

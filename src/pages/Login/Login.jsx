@@ -26,17 +26,17 @@ const Login = () => {
 
         {
             update ? await axios.put('https://invoice-api-m465.onrender.com/api/auth', loginData)
-            // update ? await axios.put('http://localhost:5000/api/auth', loginData)
+                // update ? await axios.put('http://localhost:5000/api/auth', loginData)
                 .then((res) => setLoginData(...loginData, { username: res?.data?.username }))
                 .catch((err) => console.log(err))
 
                 : await axios.post('https://invoice-api-m465.onrender.com/api/auth', loginData)
-                // : await axios.post('http://localhost:5000/api/auth', loginData)
+            // : await axios.post('http://localhost:5000/api/auth', loginData)
         }
 
         localStorage.setItem('user', JSON.stringify(loginData.username))
 
-        // navigate('/list')
+        navigate('/list')
     }
 
     return (
