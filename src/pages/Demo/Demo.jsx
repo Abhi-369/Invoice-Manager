@@ -277,25 +277,25 @@ const Demo = () => {
                                 {
                                     clientData ? clientData.products.map((item, i) => (
                                         <tr key={i} className=''>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2'>
+                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
                                                 <input type='text' defaultValue={item.Item} disabled={true} className='bg-transparent outline-none w-full' />
                                             </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2'>
+                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
                                                 <input type='number' defaultValue={item.Height} disabled={true} className='bg-transparent outline-none w-full' />
                                             </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2'>
+                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
                                                 <input type='number' defaultValue={item.Width} disabled={true} className='bg-transparent outline-none w-full' />
                                             </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2'>
+                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
                                                 <input type='number' defaultValue={item.TotalSqFt} disabled={true} className='bg-transparent outline-none w-full' />
                                             </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2'>
+                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
                                                 <input type='number' defaultValue={item.Quantity} disabled={true} className='bg-transparent outline-none w-full' />
                                             </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2'>
+                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
                                                 <input type='number' defaultValue={item.RateItemWise} disabled={true} className='bg-transparent outline-none w-full' />
                                             </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2'>
+                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
                                                 <input type='number' defaultValue={item.Total} disabled={true} className='bg-transparent outline-none w-full' />
                                             </td>
                                             <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2 w-32'>
@@ -386,7 +386,7 @@ const Demo = () => {
                         {(id || clientData) && <>
                             <div>
                                 <label>Payment After Delivery: </label>
-                                <input type="number" placeholder='Amount' name='afterDelivery' id='onEditPayment' defaultValue={clientData && clientData?.afterDelivery} disabled={finalPrice === 0} onChange={handleChange} className='border-none outline-none py-px placeholder-gray-200 text-center mx-px bg-[#d8042a] text-white rounded-md' />
+                                <input type="number" placeholder='Amount' name='afterDelivery' id='onEditPayment' defaultValue={clientData && clientData?.afterDelivery} disabled={finalPrice === 0} onChange={handleChange} className='border-none outline-none py-px placeholder-gray-200 text-center mx-px bg-[#d8042a] text-white rounded-md w-32' />
                             </div>
 
                             <div>
@@ -414,7 +414,7 @@ const Demo = () => {
                         </div>
                     }
                     {
-                        ((id && finalPrice !== 0) || (clientData && finalPrice !== 0)) && <div className='flex gap-5 items-center justify-center'>
+                        ((id && finalPrice !== 0) || (clientData && finalPrice !== 0)) && <div className='flex gap-5 items-center justify-center pb-5'>
                             <button onClick={handleUpdate} className='bg-[#d8042a] px-5 py-2 rounded-md text-white font-medium cursor-pointer'>Update Payment</button>
                             <label htmlFor='onEditPayment' className='bg-[#d8042a] px-5 py-2 rounded-md text-white font-medium cursor-pointer'>Edit Payment</label>
                         </div>
