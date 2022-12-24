@@ -234,7 +234,7 @@ const Demo = () => {
                                     <button className='bg-[#d8042a] text-white px-3 py-1 rounded-md font-medium' onClick={handleRemove}>Remove</button>
                                 </div>
                             </div>
-                            <Link to='/list'>
+                            <Link to='/list' className='sm:block hidden'>
                                 <button className='md:mr-20 mr-1 bg-[#d8042a] px-4 py-2 rounded-md text-white font-medium hover:bg-red-700 active:scale-95 transition-all duration-100 ease-in'>View Report</button>
                             </Link>
                         </div>

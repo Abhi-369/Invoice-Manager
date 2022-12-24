@@ -38,7 +38,7 @@ const Report = () => {
                 <div className="md:border-2 lg:w-[80vw] w-screen h-auto flex flex-col items-center mx-auto py-10">
                     <header className='flex justify-between w-full md:text-2xl text-xl font-medium md:px-10 px-2 py-5'>
                         <h3>Invoices</h3>
-                        <div className='flex items-center gap-4 mr-[-40px] md:mr-[0px]'>
+                        <div className='flex items-center gap-4'>
                             <Link to='/update'>
                                 <h2 className='underline'>{user}</h2>
                             </Link>
@@ -47,7 +47,7 @@ const Report = () => {
                             </Link>
                         </div>
                     </header>
-                    <div className='overflow-x-auto overflow-y-hidden'>
+                    <div className='overflow-x-auto'>
                         <div className='md:flex justify-around lg:w-[80vw] w-screen grid grid-cols-5'>
                             <div className='flex flex-col gap-5 items-center'>
                                 <h1 className='md:text-2xl text-sm font-medium my-5 text-center'>No.</h1>

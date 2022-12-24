@@ -40,8 +40,8 @@ const Login = () => {
     }
 
     return (
-        <div className='flex items-center justify-center h-screen bg-slate-200'>
-            <div className='flex flex-col justify-center gap-10 px-5 h-72 rounded-lg bg-[#d8042a]'>
+        <div className='flex items-center justify-center h-screen'>
+            <div className='flex flex-col justify-center gap-10 px-7 h-72 rounded-lg bg-[#d8042a]'>
                 <div className='flex flex-col gap-7 items-center justify-center'>
                     {update &&
                         <div className='flex items-center gap-5'>
