@@ -310,8 +310,8 @@ const Demo = () => {
                                                     {/* <input type="text" placeholder='Item' name='Item' autoComplete='on' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' /> */}
                                                     <select name="Item" id={item.id} className="bg-transparent outline-none" onChange={edtiItemHandler}>
                                                         <option disabled selected className='bg-[#d8042a] outline-none disabled:bg-gray-200'>select item</option>
-                                                        {dropDownData?.map((item) =>
-                                                            <option value={item} className='bg-[#d8042a] outline-none flex items-center'>{item}</option>
+                                                        {dropDownData?.map((item, i) =>
+                                                            <option key={i} value={item} className='bg-[#d8042a] outline-none flex items-center'>{item}</option>
 
                                                         )}
                                                     </select>

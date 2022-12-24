@@ -48,35 +48,35 @@ const Report = () => {
                         </div>
                     </header>
                     <div className='overflow-x-auto overflow-y-hidden'>
-                        <div className='flex justify-around lg:w-[80vw] w-screen gap-5'>
+                        <div className='md:flex justify-around lg:w-[80vw] w-screen grid grid-cols-5'>
                             <div className='flex flex-col gap-5 items-center'>
                                 <h1 className='md:text-2xl text-sm font-medium my-5 text-center'>No.</h1>
                                 {data?.map((item, index) =>
-                                    <span className='md:text-xl text-sm font-medium mr-2'>{index + 1}</span>
+                                    <span key={index} className='md:text-xl text-sm font-medium mr-2'>{index + 1}</span>
                                 )}
                             </div>
                             <div className='flex flex-col gap-5'>
                                 <h1 className='md:text-2xl text-sm font-medium my-5 text-center'>Client</h1>
-                                {data?.map((item) =>
-                                    <span className='md:text-xl text-sm font-medium'>{item.username}</span>
+                                {data?.map((item, i) =>
+                                    <span key={i} className='md:text-xl text-sm font-medium'>{item.username}</span>
                                 )}
                             </div>
                             <div className='flex flex-col gap-5 items-center'>
                                 <h1 className='md:text-2xl text-sm font-medium my-5 text-center'>Date</h1>
-                                {data?.map((item) =>
-                                    <span className='md:text-xl text-sm font-medium whitespace-nowrap'>{moment(item.createdAt).format("DD/MM/YYYY | HH:mm")}</span>
+                                {data?.map((item, i) =>
+                                    <span key={i} className='md:text-xl text-sm font-medium whitespace-nowrap'>{moment(item.createdAt).format("DD/MM/YYYY | HH:mm")}</span>
                                 )}
                             </div>
                             <div className='flex flex-col gap-5 items-center'>
-                                <h1 className='md:text-2xl text-sm font-medium my-5 text-center'>Pending Payment</h1>
-                                {data?.map((item) =>
-                                    <span className='md:text-xl text-sm font-medium'>{!item.totalAmount ? '-' : (item?.totalAmount - item?.discount) - item?.advance - item?.afterDelivery}</span>
+                                <h1 className='md:text-2xl text-sm font-medium my-5 text-center whitespace-nowrap'>Pending</h1>
+                                {data?.map((item, i) =>
+                                    <span key={i} className='md:text-xl text-sm font-medium'>{!item.totalAmount ? '-' : (item?.totalAmount - item?.discount) - item?.advance - item?.afterDelivery}</span>
                                 )}
                             </div>
                             <div className='flex flex-col gap-5 items-center'>
-                                <h1 className='md:text-2xl text-sm font-medium my-5 text-center'>Total Amount</h1>
-                                {data?.map((item) =>
-                                    <div className='flex items-center md:gap-5 relative'>
+                                <h1 className='md:text-2xl text-sm font-medium my-5 text-center whitespace-nowrap'>Total</h1>
+                                {data?.map((item, i) =>
+                                    <div key={i} className='flex items-center md:gap-5 relative'>
                                         <span className='md:text-xl text-sm font-medium w-12'>{!item?.totalAmount ? '-' : (item?.totalAmount)}</span>
                                         <Link to={{ pathname: `/${item._id}`, query: { id: item._id } }}>
                                             <button className='border px-2 py-1 rounded-md bg-red-600 text-white font-medium absolute top-[-5px]'>Details</button>
