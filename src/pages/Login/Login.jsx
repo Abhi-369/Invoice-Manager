@@ -14,7 +14,6 @@ const Login = () => {
     const navigate = useNavigate()
 
     const pathName = window.location.pathname.split('/')
-    console.log("hello", pathName.includes("update"))
 
     const update = pathName.includes("update")
 
@@ -39,9 +38,6 @@ const Login = () => {
 
         // navigate('/list')
     }
-
-    console.log("logindata", loginData)
-    console.log("logindata", loginData)
 
     return (
         <div className='flex items-center justify-center h-screen bg-slate-200'>

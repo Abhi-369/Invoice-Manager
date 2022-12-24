@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { uid } from 'uid';
 import axios from 'axios'
 import './Demo.css'
-import { useNavigate, useParams } from 'react-router-dom';
-import { BiMinusCircle } from 'react-icons/bi'
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { Rings } from 'react-loader-spinner';
 
 const Demo = () => {
@@ -25,10 +25,11 @@ const Demo = () => {
     ])
 
     const [totalAmount, setTotalAmount] = useState(0)
+    const [viewImage, setViewImage] = useState()
+    const [loading, setLoading] = useState(false)
 
     const { id } = useParams()
     const navigate = useNavigate()
-    console.log("itemid--___", id)
 
     const [client, setClient] = useState({
         username: '',
@@ -66,12 +67,9 @@ const Demo = () => {
                 .then((res) => setClientData(res.data))
                 .catch((err) => console.log(err))
     }, [])
-    console.log("iamge++", image)
-
     useEffect(() => {
         async function fetchData() {
             const res = localStorage.getItem('dropDown') && JSON.parse(localStorage.getItem('dropDown'))
-            console.log("res>data", res)
             setDropDownData([...new Set(res)])
         }
         fetchData()
@@ -106,7 +104,6 @@ const Demo = () => {
                     item[key] = (item.RateItemWise) * (item.Quantity)
                 }
                 if (key === 'Img' && item.id === editedItem.id) {
-                    console.log("lodu", image)
                     item[key] = image
                 }
             }
@@ -115,8 +112,6 @@ const Demo = () => {
 
         setItems(newItems);
     }
-
-    console.log("items", items)
 
     const addItemHandler = (e) => {
         const id = uid(6)
@@ -153,12 +148,11 @@ const Demo = () => {
     }, [items, client])
 
 
-    console.log("data_______", data)
-
     const handleSubmit = async () => {
+        setLoading(true)
         await axios.post('https://invoice-api-m465.onrender.com/api/client', data)
         // axios.post('http://localhost:5000/api/client', data)
-
+        setLoading(false)
         navigate('/list')
         window.location.reload()
     }
@@ -207,7 +201,7 @@ const Demo = () => {
 
     return (
         <>
-            {(!clientData && id) ?
+            {((!clientData && id) || loading) ?
                 <div className="flex items-center justify-center h-screen">
                     <Rings
                         height="80"
@@ -230,15 +224,20 @@ const Demo = () => {
                     }
 
                     {!id &&
-                        <div className='mt-4'>
-                            <div className='flex items-start gap-3 pl-3 mb-2'>
-                                <input type="text" placeholder="Type Item Name Here" className="border-2 border-[#d8042a] rounded-lg outline-none px-2 py-1" onChange={handleDropDownValue} />
-                                <button className='bg-[#d8042a] text-white px-3 py-1 rounded-md font-medium' onClick={handleSave}>Save</button>
+                        <div className='mt-4 flex items-center justify-between'>
+                            <div>
+                                <div className='flex items-start gap-3 pl-3 mb-2'>
+                                    <input type="text" placeholder="Type Item Name Here" className="border-2 border-[#d8042a] rounded-lg outline-none px-2 py-1" onChange={handleDropDownValue} />
+                                    <button className='bg-[#d8042a] text-white px-3 py-1 rounded-md font-medium' onClick={handleSave}>Save</button>
+                                </div>
+                                <div className='flex items-start gap-3 pl-3'>
+                                    <input type="text" placeholder="Type One Value at Once" className="border-2 border-[#d8042a] rounded-lg outline-none px-2 py-1" onChange={handleRemoveValue} />
+                                    <button className='bg-[#d8042a] text-white px-3 py-1 rounded-md font-medium' onClick={handleRemove}>Remove</button>
+                                </div>
                             </div>
-                            <div className='flex items-start gap-3 pl-3'>
-                                <input type="text" placeholder="Type One Value at Once" className="border-2 border-[#d8042a] rounded-lg outline-none px-2 py-1" onChange={handleRemoveValue} />
-                                <button className='bg-[#d8042a] text-white px-3 py-1 rounded-md font-medium' onClick={handleRemove}>Remove</button>
-                            </div>
+                            <Link to='/list'>
+                                <button className='md:mr-20 mr-1 bg-[#d8042a] px-4 py-2 rounded-md text-white font-medium hover:bg-red-700 active:scale-95 transition-all duration-100 ease-in'>View Report</button>
+                            </Link>
                         </div>
                     }
 
@@ -301,7 +300,7 @@ const Demo = () => {
                                                 <input type='number' defaultValue={item.Total} disabled={true} className='bg-transparent outline-none w-full' />
                                             </td>
                                             <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2 w-32'>
-                                                <img src={item.Img} alt="" className='img' />
+                                                <span className='cursor-pointer' onClick={() => setViewImage(item)}>View Image</span>
                                             </td>
                                         </tr>
 
@@ -342,38 +341,18 @@ const Demo = () => {
                                                     <input type="file" name='Img' id={item.id} onChange={edtiItemHandler} />
                                                 </td>
                                             </tr>
-                                            // <tr key={i}>
-                                            //     <td>
-                                            //         <input type="text" placeholder='Item' name='Item' autoComplete='on' id={item.id} onChange={edtiItemHandler} className='border-none outline-none p-3 placeholder-gray-200 text-center mx-px xl:w-32 md:w-16 w-12  bg-[#d8042a] text-white rounded-md' />
-                                            //     </td>
-                                            //     <td>
-                                            //         <input type="number" placeholder='Height' name='Height' id={item.id} onChange={edtiItemHandler} className='border-none outline-none p-3 placeholder-gray-200 text-center mx-px xl:w-32 md:w-16 w-12  bg-[#d8042a] text-white rounded-md' />
-                                            //     </td>
-                                            //     <td>
-                                            //         <input type="number" placeholder='Width' name='Width' id={item.id} onChange={edtiItemHandler} className='border-none outline-none p-3 placeholder-gray-200 text-center mx-px xl:w-32 md:w-16 w-12  bg-[#d8042a] text-white rounded-md' />
-                                            //     </td>
-
-                                            //     <td>
-                                            //         <input type="number" placeholder="TotalSqFt" name='TotalSqFt' id={item.id} value={item.TotalSqFt} onChange={edtiItemHandler} className='border-none outline-none p-3 placeholder-gray-200 text-center mx-px xl:w-32 md:w-16 w-12  bg-[#d8042a] text-white rounded-md' />
-                                            //     </td>
-                                            //     <td>
-                                            //         <input type="number" placeholder="Quantity" name='Quantity' id={item.id} onChange={edtiItemHandler} className='border-none outline-none p-3 placeholder-gray-200 text-center mx-px xl:w-32 md:w-16 w-12  bg-[#d8042a] text-white rounded-md' />
-                                            //     </td>
-                                            //     <td>
-                                            //         <input type="number" placeholder="RateItemWise" name='RateItemWise' id={item.id} onChange={edtiItemHandler} className='border-none outline-none p-3 placeholder-gray-200 text-center mx-px xl:w-32 md:w-16 w-12  bg-[#d8042a] text-white rounded-md' />
-                                            //     </td>
-
-                                            //     <td>
-                                            //         <input type="number" placeholder="Total" name='Total' id={item.id} value={item.Total} onChange={edtiItemHandler} className='border-none outline-none p-3 placeholder-gray-200 text-center mx-px xl:w-32 md:w-16 w-12  bg-[#d8042a] text-white rounded-md' />
-                                            //     </td>
-                                            //     <td>
-                                            //         <input type="file" name='Img' id={item.id} onChange={edtiItemHandler} className='border-none outline-none p-3 mx-px xl:w-44 w-32 bg-[#d8042a] text-white rounded-md' />
-                                            //     </td>
-                                            // </tr>
                                         ))}
                             </tbody>
                         </table >
-                    </div >
+                    </div>
+
+                    {viewImage &&
+                        <div className="flex items-center justify-center absolute top-0 bottom-0 right-0 left-0 mx-auto bg-slate-200">
+                            <img src={viewImage.Img} alt="" className='w-auto h-auto object-cover rounded-lg' />
+                            <AiOutlineCloseCircle className='h-12 w-12 cursor-pointer absolute right-16 top-16' onClick={() => setViewImage(false)} />
+                        </div>
+                    }
+
                     <div className='flex items-center justify-center mt-3'>
                         {
                             !clientData && <>
@@ -388,7 +367,7 @@ const Demo = () => {
                             </>
                         }
                     </div>
-                    <div className='child:border-b-4 child:m-5 child:border-red-600 child:p-1 child:text-center flex items-center justify-center sm:gap-10 text-[#b41733] sm:text-lg text-sm font-medium'>
+                    <div className='child:border-b-4 child:m-5 child:border-red-600 child:p-1 child:text-center md:flex md:items-center grid grid-cols-2 justify-center sm:gap-10 text-[#b41733] sm:text-lg text-sm font-medium'>
                         <div>
                             <label>Total Amount: </label>
                             <span>{total}</span>
