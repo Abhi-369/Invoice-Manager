@@ -256,7 +256,7 @@ const Demo = () => {
                             }
                         </div>
                     </div>
-                    <div className='w-[99vw] mx-auto overflow-x-auto'>
+                    <div className='w-[99vw] mx-auto grid overflow-x-scroll'>
                         <table className='mt-3'>
                             <thead className='child:border-2'>
                                 <tr className=''>
