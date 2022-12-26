@@ -15,6 +15,8 @@ const Report = () => {
             .catch((err) => console.log(err))
     }, [])
 
+    const res = data?.sort((a, b) => (b.totalAmount - b.discount - b.advance - b.afterDelivery) - (a.totalAmount - a.discount - a.advance - a.afterDelivery))
+
     const length = data?.length
 
     const user = JSON.parse(localStorage.getItem('user'))
