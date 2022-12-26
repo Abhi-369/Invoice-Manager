@@ -17,6 +17,12 @@ const Report = () => {
 
     const res = data?.sort((a, b) => (b.totalAmount - b.discount - b.advance - b.afterDelivery) - (a.totalAmount - a.discount - a.advance - a.afterDelivery))
 
+    function getPending() {
+        const pendingValue = data?.filter((item) => item.totalAmount - item.discount - item.advance - item.afterDelivery !== 0)
+        pendingValue?.sort((a, b) => (b.totalAmount - b.discount - b.advance - b.afterDelivery) - (a.totalAmount - a.discount - a.advance - a.afterDelivery))
+        setData(pendingValue)
+    }
+
     const length = data?.length
 
     const user = JSON.parse(localStorage.getItem('user'))
@@ -40,6 +46,7 @@ const Report = () => {
                 <div className="md:border-2 lg:w-[80vw] w-screen h-auto flex flex-col items-center mx-auto py-10">
                     <header className='flex justify-between w-full md:text-2xl text-xl font-medium md:px-10 px-2 py-5'>
                         <h3>Invoices</h3>
+                        <button onClick={getPending} className='border px-3 py-1 rounded-md text-xl text-white bg-red-600 hover:bg-red-700 sm:block hidden'>View All Pending</button>
                         <div className='flex items-center gap-4'>
                             <Link to='/update'>
                                 <h2 className='underline'>{user}</h2>
@@ -49,34 +56,39 @@ const Report = () => {
                             </Link>
                         </div>
                     </header>
-                    <div className='overflow-x-auto'>
+                    <div className='overflow-x-auto overflow-y-hidden'>
                         <div className='md:flex justify-around lg:w-[80vw] w-screen grid grid-cols-5'>
                             <div className='flex flex-col gap-5 items-center'>
                                 <h1 className='md:text-2xl text-sm font-medium my-5 text-center'>No.</h1>
+                                {/* {(!pending ? data : pending)?.map((item, index) => */}
                                 {data?.map((item, index) =>
                                     <span key={index} className='md:text-xl text-sm font-medium mr-2'>{index + 1}</span>
                                 )}
                             </div>
                             <div className='flex flex-col gap-5'>
                                 <h1 className='md:text-2xl text-sm font-medium my-5 text-center'>Client</h1>
+                                {/* {(!pending ? data : pending)?.map((item, i) => */}
                                 {data?.map((item, i) =>
                                     <span key={i} className='md:text-xl text-sm font-medium'>{item.username}</span>
                                 )}
                             </div>
                             <div className='flex flex-col gap-5 items-center'>
                                 <h1 className='md:text-2xl text-sm font-medium my-5 text-center'>Date</h1>
+                                {/* {(!pending ? data : pending)?.map((item, i) => */}
                                 {data?.map((item, i) =>
                                     <span key={i} className='md:text-xl text-sm font-medium whitespace-nowrap'>{moment(item.createdAt).format("DD/MM/YYYY | HH:mm")}</span>
                                 )}
                             </div>
                             <div className='flex flex-col gap-5 items-center'>
                                 <h1 className='md:text-2xl text-sm font-medium my-5 text-center whitespace-nowrap'>Pending</h1>
+                                {/* {(!pending ? data : pending)?.map((item, i) => */}
                                 {data?.map((item, i) =>
                                     <span key={i} className='md:text-xl text-sm font-medium'>{!item.totalAmount ? '-' : (item?.totalAmount - item?.discount) - item?.advance - item?.afterDelivery}</span>
                                 )}
                             </div>
                             <div className='flex flex-col gap-5 items-center'>
                                 <h1 className='md:text-2xl text-sm font-medium my-5 text-center whitespace-nowrap'>Total</h1>
+                                {/* {(!pending ? data : pending)?.map((item, i) => */}
                                 {data?.map((item, i) =>
                                     <div key={i} className='flex items-center md:gap-5 relative'>
                                         <span className='md:text-xl text-sm font-medium w-12'>{!item?.totalAmount ? '-' : (item?.totalAmount)}</span>
