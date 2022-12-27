@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { uid } from 'uid';
 import axios from 'axios'
 import './Demo.css'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { Rings } from 'react-loader-spinner';
+import { PDFExport, savePDF } from '@progress/kendo-react-pdf';
 
 const Demo = () => {
 
@@ -23,6 +24,8 @@ const Demo = () => {
             Img: ''
         },
     ])
+
+    const pdfExportComponent = useRef(null)
 
     const [totalAmount, setTotalAmount] = useState(0)
     const [viewImage, setViewImage] = useState()
@@ -193,10 +196,13 @@ const Demo = () => {
         const res = storage.filter((item) => item !== storage[indexOfItem])
         await localStorage.setItem('dropDown', JSON.stringify(res));
         window.location.reload()
-        // setDropDownData(res)
     }
 
     const finalPrice = ((total - (!clientData ? client.discount : clientData.discount)) - (!clientData ? client?.advance : clientData?.advance) - (!clientData ? client?.afterDelivery : clientData?.afterDelivery))
+
+    function printDocument() {
+        pdfExportComponent.current.save()
+    }
 
     return (
         <>
@@ -213,6 +219,7 @@ const Demo = () => {
                         ariaLabel="rings-loading"
                     />
                 </div> :
+
                 <div className="relative h-screen border-2 w-screen">
                     {
                         id &&
@@ -240,186 +247,197 @@ const Demo = () => {
                         </div>
                     }
 
-                    <div className='flex sm:flex-row flex-col items-center justify-center my-5 child:flex child:items-center gap-5'>
+                    <PDFExport ref={pdfExportComponent} margin="3cm">
                         <div>
-                            <label className='font-semibold sm:text-xl text-base'>Name: </label>
-                            {
-                                clientData ? <span className='api__data'>{clientData.username}</span> :
-                                    <input type="text" placeholder='Username (Required)' name='username' autoComplete='on' onChange={handleChange} required className='bg-[#C5C7C6] border-b-2 border-black rounded-md ml-1 px-2 py-1 placeholder-gray-500' />
-                            } &nbsp;
-                        </div>
-                        <div>
-                            <label className='font-semibold sm:text-xl text-base whitespace-nowrap'>Mobile Number: </label>
-                            {
-                                clientData ? <span className='api__data'>{clientData.number}</span> :
-                                    <input type="number" placeholder='Number (Required)' name='number' autoComplete='on' onChange={handleChange} required className='bg-[#C5C7C6] border-b-2 border-black rounded-md ml-1 px-2 py-1 placeholder-gray-500' />
-                            }
-                        </div>
-                    </div>
-                    <div className='w-[99vw] mx-auto grid overflow-x-scroll'>
-                        <table className='mt-3'>
-                            <thead className='child:border-2'>
-                                <tr className=''>
-                                    <th colSpan="8" className='p-3'>RETAIL WORK ESTIMATE</th>
-                                </tr>
-                                <tr className='child:border-2 child:px-3 child:py-2'>
-                                    <th>Item</th>
-                                    <th>Height</th>
-                                    <th>Width</th>
-                                    <th>Total Sq.Ft</th>
-                                    <th>Quantity</th>
-                                    <th>Rate Item Wise</th>
-                                    <th>Total</th>
-                                    <th>Image</th>
-                                </tr>
-                            </thead>
-                            <tbody className="">
-                                {
-                                    clientData ? clientData.products.map((item, i) => (
-                                        <tr key={i} className=''>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
-                                                <input type='text' defaultValue={item.Item} disabled={true} className='bg-transparent outline-none w-full' />
-                                            </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
-                                                <input type='number' defaultValue={item.Height} disabled={true} className='bg-transparent outline-none w-full' />
-                                            </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
-                                                <input type='number' defaultValue={item.Width} disabled={true} className='bg-transparent outline-none w-full' />
-                                            </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
-                                                <input type='number' defaultValue={item.TotalSqFt} disabled={true} className='bg-transparent outline-none w-full' />
-                                            </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
-                                                <input type='number' defaultValue={item.Quantity} disabled={true} className='bg-transparent outline-none w-full' />
-                                            </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
-                                                <input type='number' defaultValue={item.RateItemWise} disabled={true} className='bg-transparent outline-none w-full' />
-                                            </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
-                                                <input type='number' defaultValue={item.Total} disabled={true} className='bg-transparent outline-none w-full' />
-                                            </td>
-                                            <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2 w-32'>
-                                                <span className='cursor-pointer' onClick={() => setViewImage(item)}>View Image</span>
-                                            </td>
-                                        </tr>
-
-                                    )) :
-                                        items.map((item, i) => (
-                                            <tr key={i} className='border-2'>
-                                                <td className='bg-[#d8042a] text-white rounded-md border-2'>
-                                                    {/* <input type="text" placeholder='Item' name='Item' autoComplete='on' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' /> */}
-                                                    <select name="Item" id={item.id} className="bg-transparent outline-none" onChange={edtiItemHandler}>
-                                                        <option disabled selected className='bg-[#d8042a] outline-none disabled:bg-gray-200'>select item</option>
-                                                        {dropDownData?.map((item, i) =>
-                                                            <option key={i} value={item} className='bg-[#d8042a] outline-none flex items-center'>{item}</option>
-
-                                                        )}
-                                                    </select>
-                                                </td>
-                                                <td className='bg-[#d8042a] text-white rounded-md border-2'>
-                                                    <input type="number" placeholder='Height' name='Height' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
-                                                </td>
-                                                <td className='bg-[#d8042a] text-white rounded-md border-2'>
-                                                    <input type="number" placeholder='Width' name='Width' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
-                                                </td>
-
-                                                <td className='bg-[#d8042a] text-white rounded-md border-2'>
-                                                    <input type="number" placeholder="TotalSqFt" name='TotalSqFt' id={item.id} value={item.TotalSqFt} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
-                                                </td>
-                                                <td className='bg-[#d8042a] text-white rounded-md border-2'>
-                                                    <input type="number" placeholder="Quantity" name='Quantity' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
-                                                </td>
-                                                <td className='bg-[#d8042a] text-white rounded-md border-2'>
-                                                    <input type="number" placeholder="RateItemWise" name='RateItemWise' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
-                                                </td>
-
-                                                <td className='bg-[#d8042a] text-white rounded-md border-2'>
-                                                    <input type="number" placeholder="Total" name='Total' id={item.id} value={item.Total} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
-                                                </td>
-                                                <td className='bg-[#d8042a] text-white rounded-md'>
-                                                    <input type="file" name='Img' id={item.id} onChange={edtiItemHandler} />
-                                                </td>
-                                            </tr>
-                                        ))}
-                            </tbody>
-                        </table >
-                    </div>
-
-                    {viewImage &&
-                        <div className="flex items-center justify-center absolute top-0 bottom-0 right-0 left-0 mx-auto bg-slate-200">
-                            <img src={viewImage.Img} alt="" className='w-auto h-auto object-cover rounded-lg' />
-                            <AiOutlineCloseCircle className='h-12 w-12 cursor-pointer absolute right-16 top-16' onClick={() => setViewImage(false)} />
-                        </div>
-                    }
-
-                    <div className='flex items-center justify-center mt-3'>
-                        {
-                            !clientData && <>
-                                <button onClick={addItemHandler} disabled={clientData} className='bg-[#d8042a] px-6 py-2 rounded-md text-white font-medium mr-5 hover:bg-red-700'>
-                                    Add Item
-                                </button>
-                                {(!clientData && (items.length > 1)) &&
-                                    <button onClick={deleteItem} disabled={''} className='bg-[#d8042a] px-6 py-2 rounded-md text-white font-medium hover:bg-red-700'>
-                                        Remove Item
-                                    </button>
-                                }
-                            </>
-                        }
-                    </div>
-                    <div className='child:border-b-4 child:m-5 child:border-red-600 child:p-1 child:text-center md:flex md:items-center grid grid-cols-2 justify-center sm:gap-10 text-[#b41733] sm:text-lg text-sm font-medium'>
-                        <div>
-                            <label>Total Amount: </label>
-                            <span>{total}</span>
-                        </div>
-                        <div>
-                            <label>Discount: </label>
-                            {clientData ? <span>{clientData?.discount}</span> :
-                                <input type="number" placeholder='Discount' name='discount' onChange={handleChange} disabled={clientData} className='border-none outline-none py-px placeholder-gray-200 text-center mx-px bg-[#d8042a] text-white rounded-md sm:w-auto w-[100px]' />
-                            }
-                        </div>
-                        <div>
-                            <label>Advance: </label>
-                            {clientData ? <span>{clientData?.advance}</span> :
-                                <input type="number" placeholder='Advance' name='advance' onChange={handleChange} disabled={clientData} className='border-none outline-none py-px placeholder-gray-200 text-center mx-px bg-[#d8042a] text-white rounded-md sm:w-auto w-[100px]' />
-                            }
-                        </div>
-                        {(id || clientData) && <>
-                            <div>
-                                <label>Payment After Delivery: </label>
-                                <input type="number" placeholder='Amount' name='afterDelivery' id='onEditPayment' defaultValue={clientData && clientData?.afterDelivery} disabled={finalPrice === 0} onChange={handleChange} className='border-none outline-none py-px placeholder-gray-200 text-center mx-px bg-[#d8042a] text-white rounded-md w-32' />
-                            </div>
-
-                            <div>
-                                <label>Total Payed Amount: </label>
-                                <span>{clientData?.advance + clientData?.discount + clientData?.afterDelivery}</span>
-                            </div>
-                            {(finalPrice === 0) &&
+                            <div className='flex sm:flex-row flex-col items-center justify-center my-5 child:flex child:items-center gap-5'>
                                 <div>
-                                    <button className='w-full p-2 cursor-default'>Payment is Cleared!</button>
+                                    <label className='font-semibold sm:text-xl text-base'>Name: </label>
+                                    {
+                                        clientData ? <span className='api__data'>{clientData.username}</span> :
+                                            <input type="text" placeholder='Username (Required)' name='username' autoComplete='on' onChange={handleChange} required className='bg-[#C5C7C6] border-b-2 border-black rounded-md ml-1 px-2 py-1 placeholder-gray-500' />
+                                    } &nbsp;
+                                </div>
+                                <div>
+                                    <label className='font-semibold sm:text-xl text-base whitespace-nowrap'>Mobile Number: </label>
+                                    {
+                                        clientData ? <span className='api__data'>{clientData.number}</span> :
+                                            <input type="number" placeholder='Number (Required)' name='number' autoComplete='on' onChange={handleChange} required className='bg-[#C5C7C6] border-b-2 border-black rounded-md ml-1 px-2 py-1 placeholder-gray-500' />
+                                    }
+                                </div>
+                            </div>
+                            <div className='w-[99vw] mx-auto grid overflow-x-scroll'>
+                                <table className='mt-3'>
+                                    <thead className='child:border-2'>
+                                        <tr className=''>
+                                            <th colSpan="8" className='p-3'>RETAIL WORK ESTIMATE</th>
+                                        </tr>
+                                        <tr className='child:border-2 child:px-3 child:py-2'>
+                                            <th>Item</th>
+                                            <th>Height</th>
+                                            <th>Width</th>
+                                            <th>Total Sq.Ft</th>
+                                            <th>Quantity</th>
+                                            <th>Rate Item Wise</th>
+                                            <th>Total</th>
+                                            <th>Image</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="">
+                                        {
+                                            clientData ? clientData.products.map((item, i) => (
+                                                <tr key={i} className=''>
+                                                    <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
+                                                        <input type='text' defaultValue={item.Item} disabled={true} className='bg-transparent outline-none w-full' />
+                                                    </td>
+                                                    <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
+                                                        <input type='number' defaultValue={item.Height} disabled={true} className='bg-transparent outline-none w-full' />
+                                                    </td>
+                                                    <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
+                                                        <input type='number' defaultValue={item.Width} disabled={true} className='bg-transparent outline-none w-full' />
+                                                    </td>
+                                                    <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
+                                                        <input type='number' defaultValue={item.TotalSqFt} disabled={true} className='bg-transparent outline-none w-full' />
+                                                    </td>
+                                                    <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
+                                                        <input type='number' defaultValue={item.Quantity} disabled={true} className='bg-transparent outline-none w-full' />
+                                                    </td>
+                                                    <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
+                                                        <input type='number' defaultValue={item.RateItemWise} disabled={true} className='bg-transparent outline-none w-full' />
+                                                    </td>
+                                                    <td className='bg-[#d8042a] text-white rounded-lg text-center py-1 border-2'>
+                                                        <input type='number' defaultValue={item.Total} disabled={true} className='bg-transparent outline-none w-full' />
+                                                    </td>
+                                                    <td className='bg-[#d8042a] text-white rounded-lg text-center px-5 py-1 border-2 w-32'>
+                                                        <span className='cursor-pointer' onClick={() => setViewImage(item)}>View Image</span>
+                                                    </td>
+                                                </tr>
+
+                                            )) :
+                                                items.map((item, i) => (
+                                                    <tr key={i} className='border-2'>
+                                                        <td className='bg-[#d8042a] text-white rounded-md border-2'>
+                                                            {/* <input type="text" placeholder='Item' name='Item' autoComplete='on' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' /> */}
+                                                            <select name="Item" id={item.id} className="bg-transparent outline-none" onChange={edtiItemHandler}>
+                                                                <option disabled selected className='bg-[#d8042a] outline-none disabled:bg-gray-200'>select item</option>
+                                                                {dropDownData?.map((item, i) =>
+                                                                    <option key={i} value={item} className='bg-[#d8042a] outline-none flex items-center'>{item}</option>
+
+                                                                )}
+                                                            </select>
+                                                        </td>
+                                                        <td className='bg-[#d8042a] text-white rounded-md border-2'>
+                                                            <input type="number" placeholder='Height' name='Height' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
+                                                        </td>
+                                                        <td className='bg-[#d8042a] text-white rounded-md border-2'>
+                                                            <input type="number" placeholder='Width' name='Width' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
+                                                        </td>
+
+                                                        <td className='bg-[#d8042a] text-white rounded-md border-2'>
+                                                            <input type="number" placeholder="TotalSqFt" name='TotalSqFt' id={item.id} value={item.TotalSqFt} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
+                                                        </td>
+                                                        <td className='bg-[#d8042a] text-white rounded-md border-2'>
+                                                            <input type="number" placeholder="Quantity" name='Quantity' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
+                                                        </td>
+                                                        <td className='bg-[#d8042a] text-white rounded-md border-2'>
+                                                            <input type="number" placeholder="RateItemWise" name='RateItemWise' id={item.id} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
+                                                        </td>
+
+                                                        <td className='bg-[#d8042a] text-white rounded-md border-2'>
+                                                            <input type="number" placeholder="Total" name='Total' id={item.id} value={item.Total} onChange={edtiItemHandler} className='bg-transparent outline-none w-full' />
+                                                        </td>
+                                                        <td className='bg-[#d8042a] text-white rounded-md'>
+                                                            <input type="file" name='Img' id={item.id} onChange={edtiItemHandler} />
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                    </tbody>
+                                </table >
+                            </div>
+
+                            {viewImage &&
+                                <div className="flex items-center justify-center absolute top-0 bottom-0 right-0 left-0 mx-auto bg-slate-200">
+                                    <img src={viewImage.Img} alt="" className='w-auto h-auto object-cover rounded-lg' />
+                                    <AiOutlineCloseCircle className='h-12 w-12 cursor-pointer absolute right-16 top-16' onClick={() => setViewImage(false)} />
                                 </div>
                             }
-                        </>
-                        }
-                        {((id && finalPrice !== 0) || (clientData && finalPrice !== 0)) &&
-                            <div>
-                                <label>Total Pending Payment: </label>
-                                <span>{finalPrice}</span>
+
+                            <div className='flex items-center justify-center mt-3'>
+                                {
+                                    !clientData && <>
+                                        <button onClick={addItemHandler} disabled={clientData} className='bg-[#d8042a] px-6 py-2 rounded-md text-white font-medium mr-5 hover:bg-red-700'>
+                                            Add Item
+                                        </button>
+                                        {(!clientData && (items.length > 1)) &&
+                                            <button onClick={deleteItem} disabled={''} className='bg-[#d8042a] px-6 py-2 rounded-md text-white font-medium hover:bg-red-700'>
+                                                Remove Item
+                                            </button>
+                                        }
+                                    </>
+                                }
                             </div>
-                        }
-                    </div>
-                    {
-                        !clientData &&
-                        <div className='flex justify-center'>
-                            <button onClick={handleSubmit} className='bg-[#d8042a] px-20 py-2 rounded-md text-white font-medium mt-10 hover:bg-red-700 active:scale-95 transition-all duration-100 ease-in'>Submit</button>
+                            <div className='child:border-b-4 child:m-5 child:border-red-600 child:p-1 child:text-center md:flex md:items-center grid grid-cols-2 justify-center sm:gap-10 text-[#b41733] sm:text-lg text-sm font-medium'>
+                                <div>
+                                    <label>Total Amount: </label>
+                                    <span>{total}</span>
+                                </div>
+                                <div>
+                                    <label>Discount: </label>
+                                    {clientData ? <span>{clientData?.discount}</span> :
+                                        <input type="number" placeholder='Discount' name='discount' onChange={handleChange} disabled={clientData} className='border-none outline-none py-px placeholder-gray-200 text-center mx-px bg-[#d8042a] text-white rounded-md sm:w-auto w-[100px]' />
+                                    }
+                                </div>
+                                <div>
+                                    <label>Advance: </label>
+                                    {clientData ? <span>{clientData?.advance}</span> :
+                                        <input type="number" placeholder='Advance' name='advance' onChange={handleChange} disabled={clientData} className='border-none outline-none py-px placeholder-gray-200 text-center mx-px bg-[#d8042a] text-white rounded-md sm:w-auto w-[100px]' />
+                                    }
+                                </div>
+                                {(id || clientData) && <>
+                                    <div>
+                                        <label>Payment After Delivery: </label>
+                                        <input type="number" placeholder='Amount' name='afterDelivery' id='onEditPayment' defaultValue={clientData && clientData?.afterDelivery} disabled={finalPrice === 0} onChange={handleChange} className='border-none outline-none py-px placeholder-gray-200 text-center mx-px bg-[#d8042a] text-white rounded-md w-32' />
+                                    </div>
+
+                                    <div>
+                                        <label>Total Payed Amount: </label>
+                                        <span>{clientData?.advance + clientData?.discount + clientData?.afterDelivery}</span>
+                                    </div>
+                                    {(finalPrice === 0) &&
+                                        <div>
+                                            <button className='w-full p-2 cursor-default'>Payment is Cleared!</button>
+                                        </div>
+                                    }
+                                </>
+                                }
+                                {((id && finalPrice !== 0) || (clientData && finalPrice !== 0)) &&
+                                    <div>
+                                        <label>Total Pending Payment: </label>
+                                        <span>{finalPrice}</span>
+                                    </div>
+                                }
+                            </div>
+                            {
+                                !clientData &&
+                                <div className='flex justify-center'>
+                                    <button onClick={handleSubmit} className='bg-[#d8042a] px-20 py-2 rounded-md text-white font-medium mt-10 hover:bg-red-700 active:scale-95 transition-all duration-100 ease-in'>Submit</button>
+                                </div>
+                            }
+                            {
+                                ((id && finalPrice !== 0) || (clientData && finalPrice !== 0)) && <div className='flex gap-5 items-center justify-center pb-5'>
+                                    <button onClick={handleUpdate} className='bg-[#d8042a] px-5 py-2 rounded-md text-white font-medium cursor-pointer'>Update Payment</button>
+                                    <label htmlFor='onEditPayment' className='bg-[#d8042a] px-5 py-2 rounded-md text-white font-medium cursor-pointer'>Edit Payment</label>
+                                </div>
+                            }
+                        </div>
+                    </PDFExport>
+                    {id &&
+                        <div className="flex items-center justify-center my-10">
+                            <button onClick={printDocument} className='bg-[#d8042a] px-5 py-2 rounded-md text-white font-medium cursor-pointer'>Export to PDF</button>
                         </div>
                     }
-                    {
-                        ((id && finalPrice !== 0) || (clientData && finalPrice !== 0)) && <div className='flex gap-5 items-center justify-center pb-5'>
-                            <button onClick={handleUpdate} className='bg-[#d8042a] px-5 py-2 rounded-md text-white font-medium cursor-pointer'>Update Payment</button>
-                            <label htmlFor='onEditPayment' className='bg-[#d8042a] px-5 py-2 rounded-md text-white font-medium cursor-pointer'>Edit Payment</label>
-                        </div>
-                    }
-                </div>}
+                </div>
+
+            }
         </>
 
     )
