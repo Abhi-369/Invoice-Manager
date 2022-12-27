@@ -2,13 +2,9 @@ import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import { Grid, Rings } from 'react-loader-spinner'
-import jsPDF from 'jspdf';
-import pdfMake from 'pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-import htmlToPdfmake from 'html-to-pdfmake';
+import { Rings } from 'react-loader-spinner'
 import '@progress/kendo-theme-default/dist/all.css';
-import { PDFExport, savePDF } from '@progress/kendo-react-pdf';
+import { PDFExport } from '@progress/kendo-react-pdf';
 
 const Report = () => {
 
@@ -40,8 +36,6 @@ const Report = () => {
         }
         setShowPending(!showPending)
     }
-
-    const length = data?.length
 
     const user = JSON.parse(localStorage.getItem('user'))
 
