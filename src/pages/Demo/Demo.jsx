@@ -5,7 +5,7 @@ import './Demo.css'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { Rings } from 'react-loader-spinner';
-import { PDFExport, savePDF } from '@progress/kendo-react-pdf';
+import { PDFExport } from '@progress/kendo-react-pdf';
 
 const Demo = () => {
 
