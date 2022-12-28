@@ -63,7 +63,7 @@ const Report = () => {
                     <header className='flex justify-between w-full md:text-2xl text-xl font-medium md:px-10 px-2 py-5'>
                         <h3>Invoices</h3>
                         <button onClick={getPending} className='border px-3 py-1 rounded-md text-xl text-white bg-red-600 hover:bg-red-700 sm:block hidden'>{`${!showPending ? 'View All' : 'View All Pending'}`}</button>
-                        <button onClick={generatePDF}>pdf kr donw</button>
+                        <button onClick={generatePDF} className='border px-3 py-1 rounded-md text-xl text-white bg-red-600 hover:bg-red-700 sm:block hidden'>Export as PDF</button>
                         <div className='flex items-center gap-4'>
                             <Link to='/update'>
                                 <h2 className='underline'>{user}</h2>
