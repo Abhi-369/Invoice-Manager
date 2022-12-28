@@ -6,7 +6,6 @@ import Login from './pages/Login/Login';
 function App() {
 
   const user = JSON.parse(localStorage.getItem('user'))
-  // const user = 'abhi'
 
   return (
     <div className="App">
